@@ -63,18 +63,4 @@ public class PauseManager : MonoBehaviour
 
         IsPaused?.Invoke(isGameInPaused);
     }
-
-    public void GameOver()
-    {
-        currentState = PauseState.NOTPAUSEABLE;
-
-        isGameInPaused = true;
-        Time.timeScale = 0;
-
-        if (isDebug) return;
-
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
-    }
-
 }
