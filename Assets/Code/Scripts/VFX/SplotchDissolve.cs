@@ -32,19 +32,15 @@ public class SplotchDissolve : MonoBehaviour
 
     private void Dissolve()
     {
-        _canvas.DOFade(1f, _fadeDuration);
-
-        _splotch.DOScale(1f, _fadeDuration);
-
+        _canvas.DOFade(1f, _fadeDuration).SetUpdate(true);
+        _splotch.DOScale(1f, _fadeDuration).SetUpdate(true);
         _effect.Play();
     }
 
     private void Reset()
     {
-        _canvas.DOFade(0f, _fadeDuration);
-
-        _splotch.DOScale(0.1f, _fadeDuration);
-
+        _canvas.DOFade(0f, _fadeDuration).SetUpdate(true);
+        _splotch.DOScale(0.1f, _fadeDuration).SetUpdate(true);
         _effect.Stop();
     }
 }

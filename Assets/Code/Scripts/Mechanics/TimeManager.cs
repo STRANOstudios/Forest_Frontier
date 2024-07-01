@@ -13,9 +13,12 @@ public class TimeManager : MonoBehaviour
     [SerializeField, Range(1, 24)] private float nightTime = 18f;
 
     public static float DayDuration;
-    public static float Time = 0;
+    private float time = 0;
 
     private float hour = 0;
+
+    public delegate void TimeEvent(float value);
+    public static TimeEvent OnTimeChange;
 
     private void Awake()
     {
@@ -25,19 +28,21 @@ public class TimeManager : MonoBehaviour
 
     private void Update()
     {
-        Time += UnityEngine.Time.deltaTime * dayTimeSpeed;
+        if (Time.timeScale == 0) return;
 
-        if (Time > dayDuration) Time = 0f;
+        time += (Time.deltaTime / dayDuration) * 24f;
 
-        if (Time > hour * dayTime && Time < hour * nightTime)
+        if (time >= 24f) time = 0f;
+
+        if (time >= dayTime && time < nightTime)
         {
-            UnityEngine.Time.timeScale = dayTimeSpeed;
-            Debug.Log("Day time");
+            Time.timeScale = dayTimeSpeed;
         }
-        else if (Time < hour * dayTime)
+        else
         {
-            UnityEngine.Time.timeScale = nightTimeSpeed;
-            Debug.Log("Night time");
+            Time.timeScale = nightTimeSpeed;
         }
+
+        OnTimeChange?.Invoke(time);
     }
 }
