@@ -1,6 +1,7 @@
 using DG.Tweening;
 using UnityEngine;
 
+[DisallowMultipleComponent]
 public class SplotchDissolve : MonoBehaviour
 {
     [Header("Settings")]

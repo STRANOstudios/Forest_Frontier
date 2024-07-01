@@ -5546,6 +5546,7 @@ GameObject:
   m_Component:
   - component: {fileID: 468562239}
   - component: {fileID: 468562240}
+  - component: {fileID: 468562241}
   m_Layer: 0
   m_Name: '- Menu Controller'
   m_TagString: Untagged
@@ -5585,6 +5586,23 @@ MonoBehaviour:
   _canvasMenu: {fileID: 680480418}
   _splotch: {fileID: 1726501965}
   _effect: {fileID: 323805359}
+--- !u!114 &468562241
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 468562238}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0d4a050ac43e3764abfa83cd73e9f49d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dayDuration: 120
+  dayTimeSpeed: 1
+  nightTimeSpeed: 5
+  dayTime: 6
+  nightTime: 18
 --- !u!1 &659352687
 GameObject:
   m_ObjectHideFlags: 0

@@ -3,7 +3,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-
+[DisallowMultipleComponent, RequireComponent(typeof(SceneManager))]
 public class SceneManager : MonoBehaviour
 {
     [Header("Scene Manager")]
