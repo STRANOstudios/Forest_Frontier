@@ -15,6 +15,6 @@ public class BackgroundRotation : MonoBehaviour
 
     void Rotation()
     {
-        background.Rotate(0f, 0f, rotationSpeed * Time.deltaTime);
+        background.Rotate(0f, 0f, rotationSpeed * Time.fixedDeltaTime);
     }
 }

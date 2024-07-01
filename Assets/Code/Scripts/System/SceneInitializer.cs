@@ -3,8 +3,8 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-[DisallowMultipleComponent, RequireComponent(typeof(SceneManager))]
-public class SceneManager : MonoBehaviour
+[DisallowMultipleComponent, RequireComponent(typeof(SceneInitializer))]
+public class SceneInitializer : MonoBehaviour
 {
     [Header("Scene Manager")]
     [SerializeField] private List<SceneAsset> scenes = new();
@@ -18,7 +18,7 @@ public class SceneManager : MonoBehaviour
     {
         foreach (var scene in scenes)
         {
-            UnityEngine.SceneManagement.SceneManager.LoadSceneAsync(scene.name, LoadSceneMode.Additive);
+            SceneManager.LoadSceneAsync(scene.name, LoadSceneMode.Additive);
         }
     }
 }
