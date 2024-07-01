@@ -7,6 +7,7 @@ public class BackgroundRotation : MonoBehaviour
 
     [Header("References")]
     [SerializeField] Transform background;
+    [SerializeField] Transform background2;
 
     void Update()
     {
@@ -16,5 +17,6 @@ public class BackgroundRotation : MonoBehaviour
     void Rotation()
     {
         background.Rotate(0f, 0f, rotationSpeed * Time.fixedDeltaTime);
+        background2.Rotate(0f, 0f, -rotationSpeed * Time.fixedDeltaTime);
     }
 }
