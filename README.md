@@ -9,7 +9,6 @@ Forest Frontier is an implementation of an AI-controlled entity that follows a d
 - [Environment](#environment)
 - [Installation](#Installation-Instructions)
 - [Build](#Or-take-the-last-Build)
-- [Contributing](#contributing)
 - [License](#license)
 
 ## Features
