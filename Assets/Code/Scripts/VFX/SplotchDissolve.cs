@@ -1,10 +1,10 @@
+using DG.Tweening;
 using UnityEngine;
 
 public class SplotchDissolve : MonoBehaviour
 {
     [Header("Settings")]
     [SerializeField] private float _fadeDuration = 0.5f;
-
 
     [Header("References")]
     [SerializeField] private CanvasGroup _canvas;
@@ -14,6 +14,15 @@ public class SplotchDissolve : MonoBehaviour
 
     [SerializeField] private ParticleSystem _effect;
 
+    private void OnEnable()
+    {
+        
+    }
+
+    private void OnDisable()
+    {
+        
+    }
 
     public void Dissolve()
     {
@@ -25,7 +34,7 @@ public class SplotchDissolve : MonoBehaviour
 
     private void Reset()
     {
-        _canvas.alpha = 0f;
+        _canvas.DOFade(0f, _fadeDuration);
         _canvasMenu.alpha = 0f;
 
         _splotch.localScale = new(.1f, .1f, .1f);
