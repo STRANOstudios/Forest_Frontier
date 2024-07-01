@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 [DisallowMultipleComponent]
@@ -14,9 +15,12 @@ public class TimeManager : MonoBehaviour
     [Space]
     [SerializeField, Range(1, 24), Tooltip("Initial time in game")] private float initialTime = 7f;
 
-    private float time = 0;
+    public static float time = 0;
 
     private int day = 0;
+
+    bool isDay = false;
+    bool isNight = true;
 
     public delegate void TimeEvent(float value);
     public static TimeEvent OnTimeChange;
@@ -38,13 +42,19 @@ public class TimeManager : MonoBehaviour
             time = 0f;
         }
 
-        if (time >= dayTime && time < nightTime)
+        if (time >= dayTime && time < nightTime && !isDay)
         {
             Time.timeScale = dayTimeSpeed;
+
+            isDay = true;
+            isNight = false;
         }
-        else
+        else if(!isNight)
         {
             Time.timeScale = nightTimeSpeed;
+
+            isDay = false;
+            isNight = true;
         }
 
         OnTimeChange?.Invoke(time);
