@@ -1048,6 +1048,8 @@ GameObject:
   - component: {fileID: 488662865}
   - component: {fileID: 488662868}
   - component: {fileID: 488662866}
+  - component: {fileID: 488662870}
+  - component: {fileID: 488662869}
   m_Layer: 7
   m_Name: '- Player'
   m_TagString: Untagged
@@ -1112,6 +1114,50 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &488662869
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 488662864}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 907913039fb98f24d9a11057110c37c8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hunger: 100
+  thirst: 100
+  hungerLimit: 20
+  thirstLimit: 20
+  timeToWork: 7
+  timeToSleep: 18
+  distanceToStop: 2
+  axe: {fileID: 575446485}
+  storageLocation: {fileID: 902142670}
+  sleepLocation: {fileID: 1914941074}
+  treeLayer:
+    serializedVersion: 2
+    m_Bits: 256
+  foodLayer:
+    serializedVersion: 2
+    m_Bits: 1024
+  waterLayer:
+    serializedVersion: 2
+    m_Bits: 16
+--- !u!114 &488662870
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 488662864}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 098ce5f5644187f43a208842ee661cc7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sim: {fileID: 488662869}
 --- !u!1 &521949448
 GameObject:
   m_ObjectHideFlags: 0
@@ -1250,63 +1296,13 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 575446485}
-  - component: {fileID: 575446484}
-  - component: {fileID: 575446483}
   m_Layer: 6
   m_Name: Axe
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!65 &575446483
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 575446482}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 0.8, z: 0.3}
-  m_Center: {x: 0, y: 1, z: 0.15}
---- !u!54 &575446484
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 575446482}
-  serializedVersion: 4
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 256
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 1783
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 0
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
+  m_IsActive: 1
 --- !u!4 &575446485
 Transform:
   m_ObjectHideFlags: 0

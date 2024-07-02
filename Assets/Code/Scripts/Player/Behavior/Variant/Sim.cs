@@ -96,7 +96,7 @@ public class Sim : MonoBehaviour
         return target != null && !agent.pathPending && agent.remainingDistance < distanceToStop;
     }
 
-    public void ChopTree()
+    public void ChopTree() // to be bug fixed
     {
         // Reduce hunger and thirst
         hunger -= Random.Range(1, 5);
