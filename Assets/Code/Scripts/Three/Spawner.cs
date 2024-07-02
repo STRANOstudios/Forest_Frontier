@@ -7,8 +7,6 @@ using UnityEngine.AI;
 public class Spawner : MonoBehaviour
 {
     [Header("Settings")]
-    [SerializeField, Min(0), Tooltip("the spawn interval in seconds")] float spawnInterval = 1.0f;
-    [Space]
     [SerializeField, Min(0)] float spawnRadius = 1.0f; // Radius for raycast to check for obstacles
     [SerializeField, Min(0), Tooltip("the tolerance for the raycast")] float tolerance = 0.5f;
     [SerializeField, Min(0), Tooltip("the area for the raycast")] float spawnArea = 10;
@@ -21,8 +19,6 @@ public class Spawner : MonoBehaviour
 
     [Header("Debug")]
     [SerializeField] bool debug = false;
-
-    private float spawnDelay = 0.0f;
     
     private bool spawning = false;
 
@@ -33,7 +29,7 @@ public class Spawner : MonoBehaviour
         if (!defaultSpawnPosition) Debug.LogWarning("DefaultSpawnPosition not assigned");
         if (!objectToSpawn) Debug.LogWarning("ObjectToSpawn not assigned");
         if (!navMeshSurface) Debug.LogWarning("NavMeshSurface not assigned");
-        if (!mainCamera) Debug.LogWarning("MainCamera not assigned");
+        //if (!mainCamera) Debug.LogWarning("MainCamera not assigned");
     }
 
 #endif

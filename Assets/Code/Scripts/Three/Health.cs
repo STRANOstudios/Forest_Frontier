@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 public class Health : MonoBehaviour
@@ -7,24 +6,25 @@ public class Health : MonoBehaviour
     [SerializeField] LayerMask layersToDamage;
     [SerializeField] int health = 3;
 
-    public static event Action Hit;
+    private int healthBackup;
 
-    private void OnCollisionEnter(Collision collision)
+    private void Awake()
     {
-        Debug.Log(collision.gameObject.layer);
+        healthBackup = health;
+    }
 
-        if (layersToDamage == (layersToDamage | (1 << collision.gameObject.layer)))
+    private void OnEnable()
+    {
+        health = healthBackup;
+    }
+
+    public void TakeDamage()
+    {
+        health--;
+
+        if (health <= 0)
         {
-            Debug.Log("HIT");
-
-            health--;
-
-            Hit?.Invoke();
-
-            if (health <= 0)
-            {
-                gameObject.SetActive(false);
-            }
+            gameObject.SetActive(false);
         }
     }
 }

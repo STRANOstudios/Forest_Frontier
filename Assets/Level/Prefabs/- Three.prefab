@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1588699945071260315}
   - component: {fileID: 8906856946925308232}
   - component: {fileID: 1539890715202978088}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: '- Three'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -84,7 +84,7 @@ GameObject:
   - component: {fileID: 2092013832171288989}
   - component: {fileID: 5210189896127153817}
   - component: {fileID: 5598321863857290536}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Capsule
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -165,7 +165,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7381395860478406729}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: '- Mesh'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -200,7 +200,7 @@ GameObject:
   - component: {fileID: 8947365038497481260}
   - component: {fileID: 5146693107106877422}
   - component: {fileID: 8532768208994054841}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cylinder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
