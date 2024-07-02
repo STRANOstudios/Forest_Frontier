@@ -2,22 +2,35 @@
 
 public class Sequence : Node
 {
-    private List<Node> children = new List<Node>();
+    private List<Node> children;
+    private int currentChild = 0;
 
     public Sequence(List<Node> children)
     {
         this.children = children;
     }
 
-    public override bool Execute()
+    public override Status Execute()
     {
-        foreach (Node child in children)
+        while (currentChild < children.Count)
         {
-            if (!child.Execute())
+            Status childStatus = children[currentChild].Execute();
+
+            if (childStatus == Status.Running)
             {
-                return false; // Fail if any child fails
+                return Status.Running;
             }
+
+            if (childStatus == Status.Failure)
+            {
+                currentChild = 0;
+                return Status.Failure;
+            }
+
+            currentChild++;
         }
-        return true; // Succeed if all children succeed
+
+        currentChild = 0;
+        return Status.Success;
     }
 }

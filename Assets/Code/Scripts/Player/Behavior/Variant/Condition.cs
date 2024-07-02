@@ -1,162 +1,176 @@
+
+#region Conditions
+
 public class IsDayTime : Node
 {
-    public override bool Execute()
+    public override Status Execute()
     {
-        return BehaviorTree2.Instance.sim.IsDayTime();
+        return BehaviorTree2.Instance.sim.IsDayTime() ? Status.Success : Status.Failure;
     }
 }
 
 public class IsNightTime : Node
 {
-    public override bool Execute()
+    public override Status Execute()
     {
-        return BehaviorTree2.Instance.sim.IsNightTime();
+        return BehaviorTree2.Instance.sim.IsNightTime() ? Status.Success : Status.Failure;
     }
 }
 
 public class IsHungry : Node
 {
-    public override bool Execute()
+    public override Status Execute()
     {
-        return BehaviorTree2.Instance.sim.IsHungry();
+        return BehaviorTree2.Instance.sim.IsHungry() ? Status.Success : Status.Failure;
     }
 }
 
 public class IsThirsty : Node
 {
-    public override bool Execute()
+    public override Status Execute()
     {
-        return BehaviorTree2.Instance.sim.IsThirsty();
+        return BehaviorTree2.Instance.sim.IsThirsty() ? Status.Success : Status.Failure;
     }
 }
 
 public class HasTarget : Node
 {
-    public override bool Execute()
+    public override Status Execute()
     {
-        return BehaviorTree2.Instance.sim.HasTarget();
-    }
-}
-
-public class FindNearestTree : Node
-{
-    public override bool Execute()
-    {
-        BehaviorTree2.Instance.sim.FindNearestTree();
-        return true;
-    }
-}
-
-public class MoveToTree : Node
-{
-    public override bool Execute()
-    {
-        BehaviorTree2.Instance.sim.MoveToTarget();
-        return BehaviorTree2.Instance.sim.IsAtTarget();
+        return BehaviorTree2.Instance.sim.HasTarget() ? Status.Success : Status.Failure;
     }
 }
 
 public class IsTreeActive : Node
 {
-    public override bool Execute()
+    public override Status Execute()
     {
-        return BehaviorTree2.Instance.sim.IsTreeActive();
-    }
-}
-
-public class ChopAction : Node
-{
-    public override bool Execute()
-    {
-        BehaviorTree2.Instance.sim.ChopTree();
-        return true;
+        return BehaviorTree2.Instance.sim.IsTreeActive() ? Status.Success : Status.Failure;
     }
 }
 
 public class IsBackpackFull : Node
 {
-    public override bool Execute()
+    public override Status Execute()
     {
-        return BehaviorTree2.Instance.sim.IsBackpackFull();
-    }
-}
-
-public class GoToStorage : Node
-{
-    public override bool Execute()
-    {
-        BehaviorTree2.Instance.sim.GoToStorage();
-        return BehaviorTree2.Instance.sim.IsAtTarget();
-    }
-}
-
-public class DepositLogs : Node
-{
-    public override bool Execute()
-    {
-        BehaviorTree2.Instance.sim.DepositLogs();
-        return true;
-    }
-}
-
-public class GoToSleep : Node
-{
-    public override bool Execute()
-    {
-        BehaviorTree2.Instance.sim.GoToSleep();
-        return true;
+        return BehaviorTree2.Instance.sim.IsBackpackFull() ? Status.Success : Status.Failure;
     }
 }
 
 public class HasLogsInBackpack : Node
 {
-    public override bool Execute()
+    public override Status Execute()
     {
-        return BehaviorTree2.Instance.sim.HasLogsInBackpack();
+        return BehaviorTree2.Instance.sim.HasLogsInBackpack() ? Status.Success : Status.Failure;
+    }
+}
+
+#endregion
+
+#region Actions
+
+public class FindNearestTree : Node
+{
+    public override Status Execute()
+    {
+        BehaviorTree2.Instance.sim.FindNearestTree();
+        return Status.Success;
+    }
+}
+
+public class MoveToTree : Node
+{
+    public override Status Execute()
+    {
+        Sim sim = BehaviorTree2.Instance.sim;
+        sim.MoveToTarget();
+        return sim.IsAtTarget() ? Status.Success : Status.Running;
+    }
+}
+
+public class ChopAction : Node
+{
+    public override Status Execute()
+    {
+        Sim sim = BehaviorTree2.Instance.sim;
+        sim.ChopTree();
+        return Status.Running; // Continuiamo a tagliare finché non siamo fermati
+    }
+}
+
+public class GoToStorage : Node
+{
+    public override Status Execute()
+    {
+        Sim sim = BehaviorTree2.Instance.sim;
+        sim.GoToStorage();
+        return sim.IsAtTarget() ? Status.Success : Status.Running;
+    }
+}
+
+public class DepositLogs : Node
+{
+    public override Status Execute()
+    {
+        BehaviorTree2.Instance.sim.DepositLogs();
+        return Status.Success;
+    }
+}
+
+public class GoToSleep : Node
+{
+    public override Status Execute()
+    {
+        BehaviorTree2.Instance.sim.GoToSleep();
+        return Status.Success;
     }
 }
 
 public class FindFood : Node
 {
-    public override bool Execute()
+    public override Status Execute()
     {
         BehaviorTree2.Instance.sim.FindNearestFood();
-        return true;
+        return Status.Success;
     }
 }
 
 public class ConsumeFood : Node
 {
-    public override bool Execute()
+    public override Status Execute()
     {
         BehaviorTree2.Instance.sim.ConsumeFood();
-        return true;
+        return Status.Success;
     }
 }
 
 public class FindWater : Node
 {
-    public override bool Execute()
+    public override Status Execute()
     {
         BehaviorTree2.Instance.sim.FindNearestWater();
-        return true;
+        return Status.Success;
     }
 }
 
 public class ConsumeWater : Node
 {
-    public override bool Execute()
+    public override Status Execute()
     {
         BehaviorTree2.Instance.sim.ConsumeWater();
-        return true;
+        return Status.Success;
     }
 }
 
 public class MoveToTarget : Node
 {
-    public override bool Execute()
+    public override Status Execute()
     {
-        BehaviorTree2.Instance.sim.MoveToTarget();
-        return true;
+        Sim sim = BehaviorTree2.Instance.sim;
+        sim.MoveToTarget();
+        return sim.IsAtTarget() ? Status.Success : Status.Running;
     }
 }
+
+
+#endregion

@@ -44,14 +44,12 @@ public class Sim : MonoBehaviour
 
     public bool IsDayTime()
     {
-        // Implement logic to determine if it's day time
         return TimeManager.time >= timeToWork && TimeManager.time < timeToSleep;
     }
 
     public bool IsNightTime()
     {
-        // Implement logic to determine if it's night time
-        return TimeManager.time < timeToWork && TimeManager.time > timeToSleep;
+        return TimeManager.time < timeToWork || TimeManager.time >= timeToSleep;
     }
 
     public bool IsHungry()
@@ -95,22 +93,40 @@ public class Sim : MonoBehaviour
 
     public bool IsAtTarget()
     {
-        return target != null && Vector3.Distance(transform.position, target.transform.position) < 2f;
+        return target != null && !agent.pathPending && agent.remainingDistance < distanceToStop;
     }
 
     public void ChopTree()
     {
+        // Reduce hunger and thirst
         hunger -= Random.Range(1, 5);
         thirst -= Random.Range(1, 5);
 
-        // rotate axe
-        if (target != null && agent.remainingDistance < distanceToStop)
+        // Check if there is a valid target
+        if (target != null)
         {
-            backpack.AddLog();
-            target.GetComponent<Health>().TakeDamage();
-            target = null;
+            // Rotate axe (assuming the axe rotates from 0 to 90 degrees)
+            const float rotationSpeed = 90f; // Degrees per second
+            float rotationAngle = Mathf.Min(rotationSpeed * Time.deltaTime, 90f); // Limit rotation angle per frame
+            axe.Rotate(Vector3.right * rotationAngle);
+
+            // Check if the axe has completed its rotation (reached 90 degrees)
+            if (axe.localRotation.eulerAngles.x >= 90f)
+            {
+                // Simulate chopping action
+                backpack.AddLog();
+                target.GetComponent<Health>().TakeDamage();
+
+                // Check if target is no longer active
+                if (!target.activeSelf)
+                {
+                    target = null; // Clear target if it's no longer active
+                    axe.localRotation = Quaternion.identity; // Reset axe rotation to original position
+                }
+            }
         }
     }
+
 
     public bool IsTreeActive()
     {
@@ -129,8 +145,10 @@ public class Sim : MonoBehaviour
 
     public void DepositLogs()
     {
-        // Simulate depositing logs
-        if (agent.remainingDistance < distanceToStop) backpack.RemoveLogs();
+        if (IsAtTarget())
+        {
+            backpack.RemoveLogs();
+        }
     }
 
     public void GoToSleep()
@@ -177,22 +195,18 @@ public class Sim : MonoBehaviour
 
     public void ConsumeFood()
     {
-        // Simulate consuming food
         hunger = 100;
         if (target != null)
         {
-            //Destroy(target);
             target = null;
         }
     }
 
     public void ConsumeWater()
     {
-        // Simulate consuming water
         thirst = 100;
         if (target != null)
         {
-            //Destroy(target);
             target = null;
         }
     }
