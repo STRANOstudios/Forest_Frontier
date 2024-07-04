@@ -10,6 +10,7 @@ public class Spawner : MonoBehaviour
     [SerializeField, Min(0)] float spawnRadius = 1.0f; // Radius for raycast to check for obstacles
     [SerializeField, Min(0), Tooltip("the tolerance for the raycast")] float tolerance = 0.5f;
     [SerializeField, Min(0), Tooltip("the area for the raycast")] float spawnArea = 10;
+    [SerializeField, Min(0), Tooltip("the amount of objects to spawn")] int spawnAmount = 10;
 
     [Header("References")]
     [SerializeField] GameObject objectToSpawn;
@@ -36,7 +37,7 @@ public class Spawner : MonoBehaviour
 
     private void Awake()
     {
-        Spawn();
+        Spawn(spawnAmount);
     }
 
     private void Update()
@@ -56,7 +57,7 @@ public class Spawner : MonoBehaviour
 
     private IEnumerator SpawnWithDelay(float delay)
     {
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < spawnAmount; i++)
         {
             yield return new WaitForSeconds(delay);
             ObjectPoolerManager.SpawnObject(objectToSpawn, GetValidSpawnPoint(), Quaternion.identity);
