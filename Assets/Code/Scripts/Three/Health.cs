@@ -6,6 +6,9 @@ public class Health : MonoBehaviour
     [SerializeField] LayerMask layersToDamage;
     [SerializeField] int health = 3;
 
+    [Header("References")]
+    [SerializeField] GameObject deathObject;
+
     private int healthBackup;
 
     private void Awake()
@@ -24,6 +27,10 @@ public class Health : MonoBehaviour
 
         if (health <= 0)
         {
+            if (deathObject != null)
+            {
+                ObjectPoolerManager.SpawnObject(deathObject, transform.position, Quaternion.identity);
+            }
             gameObject.SetActive(false);
         }
     }

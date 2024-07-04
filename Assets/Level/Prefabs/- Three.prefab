@@ -74,6 +74,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   health: 3
+  deathObject: {fileID: 4114348814130154171, guid: c185f4228ecc7b14cb47ae816197d6b4,
+    type: 3}
 --- !u!1 &2146197241811717805
 GameObject:
   m_ObjectHideFlags: 0

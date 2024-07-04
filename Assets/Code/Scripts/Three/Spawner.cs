@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using Unity.AI.Navigation;
 using UnityEngine;
 using UnityEngine.AI;
@@ -14,14 +15,14 @@ public class Spawner : MonoBehaviour
     [SerializeField, Min(0), Tooltip("the amount of objects to spawn")] int spawnAmount = 10;
 
     [Header("References")]
-    [SerializeField] GameObject objectToSpawn;
+    [SerializeField] List<GameObject> objectsToSpawn;
     [SerializeField] Transform defaultSpawnPosition;
     [SerializeField, Tooltip("the surface on which the object will be spawned")] NavMeshSurface navMeshSurface;
     [SerializeField] Camera mainCamera;
 
     [Header("Debug")]
     [SerializeField] bool debug = false;
-    
+
     private bool spawning = false;
 
 #if UNITY_EDITOR
@@ -29,7 +30,7 @@ public class Spawner : MonoBehaviour
     private void OnValidate()
     {
         if (!defaultSpawnPosition) Debug.LogWarning("DefaultSpawnPosition not assigned");
-        if (!objectToSpawn) Debug.LogWarning("ObjectToSpawn not assigned");
+        if (objectsToSpawn.Count == 0) Debug.LogWarning("ObjectsToSpawn not assigned");
         if (!navMeshSurface) Debug.LogWarning("NavMeshSurface not assigned");
         //if (!mainCamera) Debug.LogWarning("MainCamera not assigned");
     }
@@ -61,7 +62,7 @@ public class Spawner : MonoBehaviour
         for (int i = 0; i < spawnAmount; i++)
         {
             yield return new WaitForSeconds(delay);
-            ObjectPoolerManager.SpawnObject(objectToSpawn, GetValidSpawnPoint(), Quaternion.identity);
+            ObjectPoolerManager.SpawnObject(objectsToSpawn[Random.Range(0, objectsToSpawn.Count)], GetValidSpawnPoint(), Quaternion.identity);
         }
     }
 
@@ -69,7 +70,7 @@ public class Spawner : MonoBehaviour
     {
         for (int attempt = 0; attempt < amount; attempt++)
         {
-            ObjectPoolerManager.SpawnObject(objectToSpawn, GetValidSpawnPoint(), Quaternion.identity);
+            ObjectPoolerManager.SpawnObject(objectsToSpawn[Random.Range(0, objectsToSpawn.Count)], GetValidSpawnPoint(), Quaternion.identity);
         }
     }
 
@@ -127,9 +128,12 @@ public class Spawner : MonoBehaviour
 
         foreach (var hitCollider in hitColliders)
         {
-            if (hitCollider.gameObject == objectToSpawn)
+            foreach (var objectToSpawn in objectsToSpawn)
             {
-                return true;
+                if (hitCollider.gameObject == objectToSpawn)
+                {
+                    return true;
+                }
             }
         }
         return false;

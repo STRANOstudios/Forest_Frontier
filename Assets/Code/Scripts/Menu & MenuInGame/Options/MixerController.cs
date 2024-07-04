@@ -35,9 +35,9 @@ public class MixerController : MonoBehaviour
 
     void SetMixerVolumes()
     {
-        mixer.SetFloat("Master", Mathf.Lerp(-80f, 20f, PlayerPrefs.GetFloat(masterSlider.name)));
-        mixer.SetFloat("Music", Mathf.Lerp(-80f, 20f, PlayerPrefs.GetFloat(musicSlider.name)));
-        mixer.SetFloat("Sfx", Mathf.Lerp(-80f, 20f, PlayerPrefs.GetFloat(sfxSlider.name)));
+        mixer.SetFloat("Master", Mathf.Lerp(-80f, 20f, PlayerPrefs.GetFloat(masterSlider.name, 0.75f)));
+        mixer.SetFloat("Music", Mathf.Lerp(-80f, 20f, PlayerPrefs.GetFloat(musicSlider.name, 0.75f)));
+        mixer.SetFloat("Sfx", Mathf.Lerp(-80f, 20f, PlayerPrefs.GetFloat(sfxSlider.name, 0.75f)));
     }
 
     public void SetSliderVolumes()
