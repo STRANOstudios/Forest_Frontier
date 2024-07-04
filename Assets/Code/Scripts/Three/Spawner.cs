@@ -10,6 +10,7 @@ public class Spawner : MonoBehaviour
     [SerializeField, Min(0)] float spawnRadius = 1.0f; // Radius for raycast to check for obstacles
     [SerializeField, Min(0), Tooltip("the tolerance for the raycast")] float tolerance = 0.5f;
     [SerializeField, Min(0), Tooltip("the area for the raycast")] float spawnArea = 10;
+    [SerializeField, Min(0), Tooltip("the amount of objects to spawn at start")] int spawnAmountInit = 10;
     [SerializeField, Min(0), Tooltip("the amount of objects to spawn")] int spawnAmount = 10;
 
     [Header("References")]
@@ -37,7 +38,7 @@ public class Spawner : MonoBehaviour
 
     private void Awake()
     {
-        Spawn(spawnAmount);
+        Spawn(spawnAmountInit);
     }
 
     private void Update()

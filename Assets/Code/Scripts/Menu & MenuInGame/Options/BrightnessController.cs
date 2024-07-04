@@ -34,7 +34,7 @@ public class BrightnessController : MonoBehaviour
     {
         PlayerPrefs.SetFloat("Brightness", value);
 
-        int _brightnessLevel = (int)Mathf.Lerp(0, 255, value);
+        int _brightnessLevel = (int)Mathf.Lerp(50, 255, value);
 
         Color newColor = new(_brightnessLevel / 255f, _brightnessLevel / 255f, _brightnessLevel / 255f, 1);
         colorAdjustments.colorFilter.Override(newColor);
