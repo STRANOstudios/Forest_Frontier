@@ -1,5 +1,7 @@
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UIElements;
 
 [DisallowMultipleComponent, RequireComponent(typeof(NavMeshAgent)), RequireComponent(typeof(Backpack))]
 public class Sim : MonoBehaviour
@@ -46,15 +48,11 @@ public class Sim : MonoBehaviour
 
     public bool IsDayTime()
     {
-        Debug.Log("is time to school");
-
         return TimeManager.time >= timeToWork && TimeManager.time < timeToSleep;
     }
 
     public bool IsNightTime()
     {
-        Debug.Log("go to sleep, NOW!!!");
-
         return TimeManager.time < timeToWork || TimeManager.time >= timeToSleep;
     }
 
@@ -77,8 +75,6 @@ public class Sim : MonoBehaviour
     {
         Collider[] trees = Physics.OverlapSphere(transform.position, 100f, treeLayer);
         float closestDistance = Mathf.Infinity;
-
-        Debug.DrawLine(transform.position, transform.position + Vector3.up * 100f, Color.red, 5.0f);
 
         foreach (Collider tree in trees)
         {
@@ -106,6 +102,11 @@ public class Sim : MonoBehaviour
     public bool IsAtTarget()
     {
         return target != null && !agent.pathPending && agent.remainingDistance < distanceToStop;
+    }
+
+    public bool IsAtTargetAgent()
+    {
+        return !agent.pathPending && agent.remainingDistance <= agent.stoppingDistance && !agent.hasPath;
     }
 
     public void ChopTree()
@@ -141,21 +142,19 @@ public class Sim : MonoBehaviour
         }
     }
 
-    public bool IsTreeActive() // to do debug -> non funziona come dovrebbe, dovrebbe restituirmi il valore del target, ma ha qualche problema, per debug fare una visualizzazione
+    public bool IsTreeActive()
     {
         return target != null && target.activeSelf;
     }
 
     public void GoToStorage()
     {
-        Debug.Log("go to storage");
-
         agent.SetDestination(storageLocation.position);
     }
 
     public void DepositLogs()
     {
-        if (IsAtTarget())
+        if (IsAtTargetAgent() && HasLogsInBackpack())
         {
             backpack.RemoveLogs();
         }
@@ -163,8 +162,6 @@ public class Sim : MonoBehaviour
 
     public bool IsBackpackFull()
     {
-        Debug.Log("is backpack full " + backpack.IsFull());
-
         return backpack.IsFull();
     }
 

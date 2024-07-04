@@ -107,7 +107,7 @@ public class GoToStorage : Node
     {
         Sim sim = BehaviorTree2.Instance.sim;
         sim.GoToStorage();
-        return sim.IsAtTarget() ? Status.Success : Status.Running;
+        return sim.IsAtTargetAgent() ? Status.Success : Status.Running;
     }
 }
 
@@ -117,7 +117,7 @@ public class DepositLogs : Node
     {
         Sim sim = BehaviorTree2.Instance.sim;
         sim.DepositLogs();
-        return Status.Success;
+        return sim.HasLogsInBackpack() ? Status.Running : Status.Success;
     }
 }
 
@@ -175,6 +175,5 @@ public class MoveToTarget : Node
         return sim.IsAtTarget() ? Status.Success : Status.Running;
     }
 }
-
 
 #endregion

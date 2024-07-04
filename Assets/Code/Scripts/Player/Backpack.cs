@@ -12,7 +12,7 @@ public class Backpack : MonoBehaviour
 
     public void AddLog()
     {
-        index = Mathf.Clamp(index, 0, Logs.Count - 1);
+        if (IsFull()) return;
 
         Logs[index].SetActive(true);
         LogsActiveList.Add(Logs[index]);

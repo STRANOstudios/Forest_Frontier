@@ -52,8 +52,7 @@ public class BehaviorTree2 : MonoBehaviour
                             {
                                 new IsBackpackFull(),
                                 new GoToStorage(),
-                                new DepositLogs(),
-                                new MoveToTree()
+                                new DepositLogs()
                             })
                         })
                     })
