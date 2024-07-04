@@ -1,6 +1,8 @@
 
 #region Conditions
 
+using System.Diagnostics;
+
 public class IsDayTime : Node
 {
     public override Status Execute()
@@ -73,8 +75,9 @@ public class FindNearestTree : Node
 {
     public override Status Execute()
     {
-        BehaviorTree2.Instance.sim.FindNearestTree();
-        return Status.Success;
+        Sim sim = BehaviorTree2.Instance.sim;
+        sim.FindNearestTree();
+        return sim.HasTarget() ? Status.Success : Status.Failure;
     }
 }
 
@@ -94,7 +97,7 @@ public class ChopAction : Node
     {
         Sim sim = BehaviorTree2.Instance.sim;
         sim.ChopTree();
-        return Status.Running; // Continuiamo a tagliare finché non siamo fermati
+        return !sim.IsTreeActive() ? Status.Success : Status.Running;
     }
 }
 
@@ -112,7 +115,8 @@ public class DepositLogs : Node
 {
     public override Status Execute()
     {
-        BehaviorTree2.Instance.sim.DepositLogs();
+        Sim sim = BehaviorTree2.Instance.sim;
+        sim.DepositLogs();
         return Status.Success;
     }
 }

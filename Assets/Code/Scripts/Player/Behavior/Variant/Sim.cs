@@ -30,6 +30,8 @@ public class Sim : MonoBehaviour
     private GameObject target;
     private Backpack backpack;
 
+    private bool axeRotated = false;
+
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
@@ -44,11 +46,15 @@ public class Sim : MonoBehaviour
 
     public bool IsDayTime()
     {
+        Debug.Log("is time to school");
+
         return TimeManager.time >= timeToWork && TimeManager.time < timeToSleep;
     }
 
     public bool IsNightTime()
     {
+        Debug.Log("go to sleep, NOW!!!");
+
         return TimeManager.time < timeToWork || TimeManager.time >= timeToSleep;
     }
 
@@ -72,6 +78,8 @@ public class Sim : MonoBehaviour
         Collider[] trees = Physics.OverlapSphere(transform.position, 100f, treeLayer);
         float closestDistance = Mathf.Infinity;
 
+        Debug.DrawLine(transform.position, transform.position + Vector3.up * 100f, Color.red, 5.0f);
+
         foreach (Collider tree in trees)
         {
             float distance = Vector3.Distance(transform.position, tree.transform.position);
@@ -91,55 +99,57 @@ public class Sim : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Checks if the agent has reached the target.
+    /// </summary>
+    /// <returns></returns>
     public bool IsAtTarget()
     {
         return target != null && !agent.pathPending && agent.remainingDistance < distanceToStop;
     }
 
-    public void ChopTree() // to be bug fixed
+    public void ChopTree()
     {
         // Reduce hunger and thirst
         hunger -= Random.Range(1, 5);
         thirst -= Random.Range(1, 5);
 
-        // Check if there is a valid target
         if (target != null)
         {
-            // Rotate axe (assuming the axe rotates from 0 to 90 degrees)
-            const float rotationSpeed = 90f; // Degrees per second
-            float rotationAngle = Mathf.Min(rotationSpeed * Time.deltaTime, 90f); // Limit rotation angle per frame
-            axe.Rotate(Vector3.right * rotationAngle);
-
-            // Check if the axe has completed its rotation (reached 90 degrees)
-            if (axe.localRotation.eulerAngles.x >= 90f)
+            if (!axeRotated)
             {
-                // Simulate chopping action
+                // Simulate axe swinging
+                axe.Rotate(Vector3.right * 90);
+                axeRotated = true;
+            }
+            else
+            {
+                // Reset axe rotation after swinging
+                axe.Rotate(Vector3.left * 90);
+                axeRotated = false;
+
+                // Simulate chopping action with delay
                 backpack.AddLog();
                 target.GetComponent<Health>().TakeDamage();
 
-                // Check if target is no longer active
+                // Check if the target is still active
                 if (!target.activeSelf)
                 {
-                    target = null; // Clear target if it's no longer active
-                    axe.localRotation = Quaternion.identity; // Reset axe rotation to original position
+                    target = null;
                 }
             }
         }
     }
 
-
-    public bool IsTreeActive()
+    public bool IsTreeActive() // to do debug -> non funziona come dovrebbe, dovrebbe restituirmi il valore del target, ma ha qualche problema, per debug fare una visualizzazione
     {
-        return target != null && target.activeInHierarchy;
-    }
-
-    public bool IsBackpackFull()
-    {
-        return backpack.IsFull();
+        return target != null && target.activeSelf;
     }
 
     public void GoToStorage()
     {
+        Debug.Log("go to storage");
+
         agent.SetDestination(storageLocation.position);
     }
 
@@ -151,14 +161,21 @@ public class Sim : MonoBehaviour
         }
     }
 
-    public void GoToSleep()
+    public bool IsBackpackFull()
     {
-        agent.SetDestination(sleepLocation.position);
+        Debug.Log("is backpack full " + backpack.IsFull());
+
+        return backpack.IsFull();
     }
 
     public bool HasLogsInBackpack()
     {
-        return backpack.HasLogs();
+        return !backpack.IsEmpty();
+    }
+
+    public void GoToSleep()
+    {
+        agent.SetDestination(sleepLocation.position);
     }
 
     public void FindNearestFood()

@@ -12,6 +12,8 @@ public class Backpack : MonoBehaviour
 
     public void AddLog()
     {
+        index = Mathf.Clamp(index, 0, Logs.Count - 1);
+
         Logs[index].SetActive(true);
         LogsActiveList.Add(Logs[index]);
         index++;
@@ -28,13 +30,13 @@ public class Backpack : MonoBehaviour
         index = 0;
     }
 
-    public bool HasLogs()
+    public bool IsEmpty()
     {
-        return LogsActiveList.Count > 0;
+        return LogsActiveList.Count == 0;
     }
 
     public bool IsFull()
     {
-        return LogsActiveList.Count >= 6;
+        return LogsActiveList.Count == Logs.Count;
     }
 }

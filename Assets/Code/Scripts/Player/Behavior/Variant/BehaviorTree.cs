@@ -48,7 +48,7 @@ public class BehaviorTree2 : MonoBehaviour
                         {
                             new IsTreeActive(),
                             new ChopAction(),
-                            new Selector(new List<Node>
+                            new Sequence(new List<Node>
                             {
                                 new IsBackpackFull(),
                                 new GoToStorage(),
