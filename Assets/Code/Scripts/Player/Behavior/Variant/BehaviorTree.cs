@@ -22,13 +22,13 @@ public class BehaviorTree2 : MonoBehaviour
                 new IsDayTime(),
                 new Selector(new List<Node>
                 {
-                    //new Sequence(new List<Node>
-                    //{
-                    //    new IsHungry(),
-                    //    new FindFood(),
-                    //    new MoveToTarget(),
-                    //    new ConsumeFood()
-                    //}),
+                    new Sequence(new List<Node>
+                    {
+                        new IsHungry(),
+                        new FindFood(),
+                        new MoveToTarget(),
+                        new ConsumeFood()
+                    }),
                     //new Sequence(new List<Node>
                     //{
                     //    new IsThirsty(),

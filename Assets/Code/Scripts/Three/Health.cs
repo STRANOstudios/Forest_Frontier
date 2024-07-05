@@ -31,6 +31,7 @@ public class Health : MonoBehaviour
             {
                 ObjectPoolerManager.SpawnObject(deathObject, transform.position, Quaternion.identity);
             }
+            ObjectPoolerManager.ReturnObjectToPool(gameObject);
             gameObject.SetActive(false);
         }
     }

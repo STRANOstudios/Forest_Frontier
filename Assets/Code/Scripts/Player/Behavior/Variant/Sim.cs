@@ -37,6 +37,10 @@ public class Sim : MonoBehaviour
     private bool axeRotated = false;
     private Coroutine choppingCoroutine;
 
+    public delegate void SimDelegate(int value);
+    public static SimDelegate OnHungerChanged;
+    public static SimDelegate OnThirstChanged;
+
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
@@ -132,6 +136,9 @@ public class Sim : MonoBehaviour
             // Reduce hunger and thirst
             hunger -= Random.Range(1, 5);
             thirst -= Random.Range(1, 5);
+
+            OnHungerChanged?.Invoke(hunger);
+            OnThirstChanged?.Invoke(thirst);
 
             if (target != null && axeAnimator != null)
             {
@@ -237,19 +244,19 @@ public class Sim : MonoBehaviour
 
     public void ConsumeFood()
     {
-        hunger = 100;
-        if (target != null)
-        {
-            target = null;
-        }
+        hunger = target.GetComponent<IEdibleDrinkable>().Energy;
+
+        OnHungerChanged?.Invoke(hunger);
+
+        if (target != null) target = null;
     }
 
     public void ConsumeWater()
     {
-        thirst = 100;
-        if (target != null)
-        {
-            target = null;
-        }
+        thirst = target.GetComponent<IEdibleDrinkable>().Energy;
+
+        OnThirstChanged?.Invoke(thirst);
+
+        if (target != null) target = null;
     }
 }

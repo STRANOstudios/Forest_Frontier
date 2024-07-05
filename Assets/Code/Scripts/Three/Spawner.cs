@@ -69,7 +69,11 @@ public class Spawner : MonoBehaviour
     {
         for (int attempt = 0; attempt < amount; attempt++)
         {
-            ObjectPoolerManager.SpawnObject(objectsToSpawn[Random.Range(0, objectsToSpawn.Count)], GetValidSpawnPoint(), Quaternion.identity);
+            Vector3 vector3 = GetValidSpawnPoint();
+
+            if (vector3 == Vector3.zero) continue;
+
+            ObjectPoolerManager.SpawnObject(objectsToSpawn[Random.Range(0, objectsToSpawn.Count)], vector3, Quaternion.Euler(0, Random.Range(0, 360), 0));
         }
     }
 

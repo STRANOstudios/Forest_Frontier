@@ -3,7 +3,8 @@ using System.Collections;
 
 public class AutoDisable : MonoBehaviour
 {
-    [SerializeField, Range(5f, 60f)] float disableDelay = 5f;
+    [SerializeField, Min(5f)] float disableDelayMin = 5f;
+    [SerializeField, Min(5.1f)] float disableDelayMax = 5f;
 
     void OnEnable()
     {
@@ -12,8 +13,8 @@ public class AutoDisable : MonoBehaviour
 
     IEnumerator DisableAfterDelay()
     {
-        yield return new WaitForSeconds(Random.Range(5f, disableDelay));
-
+        yield return new WaitForSeconds(Random.Range(disableDelayMin, disableDelayMax));
+        ObjectPoolerManager.ReturnObjectToPool(gameObject);
         gameObject.SetActive(false);
     }
 }
