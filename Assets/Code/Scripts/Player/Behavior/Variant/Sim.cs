@@ -27,7 +27,7 @@ public class Sim : MonoBehaviour
     [Space]
     [SerializeField] LayerMask treeLayer;
     [SerializeField] LayerMask foodLayer;
-    [SerializeField] LayerMask waterLayer; 
+    [SerializeField] LayerMask waterLayer;
 
     private NavMeshAgent agent;
     private GameObject target;
@@ -36,10 +36,22 @@ public class Sim : MonoBehaviour
 
     private bool axeRotated = false;
     private Coroutine choppingCoroutine;
+    private int hungerBackup;
+    private int thirstBackup;
+
+    //flags
+    private bool isEating = false;
+    private bool isDrinking = false;
 
     public delegate void SimDelegate(int value);
     public static SimDelegate OnHungerChanged;
     public static SimDelegate OnThirstChanged;
+
+    private void Awake()
+    {
+        hungerBackup = hunger;
+        thirstBackup = hunger;
+    }
 
     void Start()
     {
@@ -66,7 +78,9 @@ public class Sim : MonoBehaviour
 
     public bool IsHungry()
     {
-        return hunger < hungerLimit;
+        if (hunger < hungerLimit) isEating = true;
+        else if (hunger == hungerBackup) isEating = false;
+        return isEating;
     }
 
     public bool IsThirsty()
@@ -244,7 +258,9 @@ public class Sim : MonoBehaviour
 
     public void ConsumeFood()
     {
-        hunger = target.GetComponentInParent<IEdibleDrinkable>().Energy; // to do bugfix
+        hunger += target.GetComponentInParent<IEdibleDrinkable>().Energy;
+
+        hunger = Mathf.Clamp(hunger, 0, hungerBackup);
 
         OnHungerChanged?.Invoke(hunger);
 
@@ -256,7 +272,9 @@ public class Sim : MonoBehaviour
 
     public void ConsumeWater()
     {
-        thirst = target.GetComponent<IEdibleDrinkable>().Energy;
+        thirst += target.GetComponent<IEdibleDrinkable>().Energy;
+
+        thirst = Mathf.Clamp(thirst, 0, thirstBackup);
 
         OnThirstChanged?.Invoke(thirst);
 
