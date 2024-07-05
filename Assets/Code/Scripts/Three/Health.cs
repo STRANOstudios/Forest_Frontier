@@ -1,3 +1,4 @@
+using DG.Tweening;
 using UnityEngine;
 
 public class Health : MonoBehaviour
@@ -11,9 +12,16 @@ public class Health : MonoBehaviour
 
     private int healthBackup;
 
+    DOTweenAnimation dotweenAnimation;
+
     private void Awake()
     {
         healthBackup = health;
+    }
+
+    private void Start()
+    {
+        dotweenAnimation = GetComponent<DOTweenAnimation>();
     }
 
     private void OnEnable()
@@ -24,6 +32,8 @@ public class Health : MonoBehaviour
     public void TakeDamage()
     {
         health--;
+
+        dotweenAnimation.DOPlay();
 
         if (health <= 0)
         {

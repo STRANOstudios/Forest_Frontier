@@ -85,7 +85,9 @@ public class Sim : MonoBehaviour
 
     public bool IsThirsty()
     {
-        return thirst < thirstLimit;
+        if (thirst < thirstLimit) isDrinking = true;
+        else if (thirst == thirstBackup) isDrinking = false;
+        return isDrinking;
     }
 
     public bool HasTarget()
@@ -156,6 +158,9 @@ public class Sim : MonoBehaviour
 
             if (target != null && axeAnimator != null)
             {
+                // Rotation player's head
+                gameObject.transform.rotation = Quaternion.LookRotation(target.transform.position - gameObject.transform.position);
+
                 if (!axeRotated)
                 {
                     // Simulate axe swinging

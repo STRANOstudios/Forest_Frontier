@@ -29,13 +29,13 @@ public class BehaviorTree2 : MonoBehaviour
                         new MoveToTarget(),
                         new ConsumeFood()
                     }),
-                    //new Sequence(new List<Node>
-                    //{
-                    //    new IsThirsty(),
-                    //    new FindWater(),
-                    //    new MoveToTarget(),
-                    //    new ConsumeWater()
-                    //}),
+                    new Sequence(new List<Node>
+                    {
+                        new IsThirsty(),
+                        new FindWater(),
+                        new MoveToTarget(),
+                        new ConsumeWater()
+                    }),
                     new Selector(new List<Node>
                     {
                         new Sequence(new List<Node>
