@@ -244,9 +244,12 @@ public class Sim : MonoBehaviour
 
     public void ConsumeFood()
     {
-        hunger = target.GetComponent<IEdibleDrinkable>().Energy;
+        hunger = target.GetComponentInParent<IEdibleDrinkable>().Energy; // to do bugfix
 
         OnHungerChanged?.Invoke(hunger);
+
+        ObjectPoolerManager.ReturnObjectToPool(target);
+        target.SetActive(false);
 
         if (target != null) target = null;
     }
