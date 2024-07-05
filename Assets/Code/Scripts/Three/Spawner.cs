@@ -4,7 +4,6 @@ using Unity.AI.Navigation;
 using UnityEngine;
 using UnityEngine.AI;
 
-[DisallowMultipleComponent]
 public class Spawner : MonoBehaviour
 {
     [Header("Settings")]
@@ -128,12 +127,9 @@ public class Spawner : MonoBehaviour
 
         foreach (var hitCollider in hitColliders)
         {
-            foreach (var objectToSpawn in objectsToSpawn)
+            if (hitCollider.gameObject.layer == objectsToSpawn[0].layer)
             {
-                if (hitCollider.gameObject == objectToSpawn)
-                {
-                    return true;
-                }
+                return true;
             }
         }
         return false;

@@ -36,27 +36,27 @@ public class BehaviorTree2 : MonoBehaviour
                     //    new MoveToTarget(),
                     //    new ConsumeWater()
                     //}),
-                    new Sequence(new List<Node>
+                    new Selector(new List<Node>
                     {
-                        new Selector(new List<Node>
-                        {
-                            new HasTarget(),
-                            new FindNearestTree()
-                        }),
-                        new MoveToTree(),
                         new Sequence(new List<Node>
                         {
-                            new IsTreeActive(),
-                            new ChopAction(),
-                            new Sequence(new List<Node>
+                            new IsBackpackFull(),
+                            new GoToStorage(),
+                            new DepositLogs()
+                        }),
+                        new Sequence(new List<Node>
+                        {
+                            new Selector(new List<Node>
                             {
-                                new IsBackpackFull(),
-                                new GoToStorage(),
-                                new DepositLogs()
-                            })
+                                new HasTarget(),
+                                new FindNearestTree()
+                            }),
+                            new MoveToTree(),
+                            new IsTreeActive(),
+                            new ChopAction()
                         })
                     })
-                })
+                })  
             }),
             new Sequence(new List<Node>
             {

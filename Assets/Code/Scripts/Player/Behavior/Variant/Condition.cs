@@ -67,6 +67,14 @@ public class HasLogsInBackpack : Node
     }
 }
 
+public class IsAtTargetAgent : Node
+{
+    public override Status Execute()
+    {
+        return BehaviorTree2.Instance.sim.IsAtTargetAgent() ? Status.Success : Status.Failure;
+    }
+}
+
 #endregion
 
 #region Actions
@@ -96,8 +104,18 @@ public class ChopAction : Node
     public override Status Execute()
     {
         Sim sim = BehaviorTree2.Instance.sim;
+
+        // Execute the chop tree action
         sim.ChopTree();
-        return !sim.IsTreeActive() ? Status.Success : Status.Running;
+
+        // Check if the backpack is full
+        if (sim.IsBackpackFull() || sim.IsNightTime()) return Status.Failure;
+
+        // Check if the tree is no longer active
+        if (!sim.IsTreeActive()) return Status.Success;
+
+        // Otherwise, the action is still running
+        return Status.Running;
     }
 }
 

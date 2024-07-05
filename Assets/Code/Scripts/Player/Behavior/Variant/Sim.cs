@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
@@ -26,18 +27,21 @@ public class Sim : MonoBehaviour
     [Space]
     [SerializeField] LayerMask treeLayer;
     [SerializeField] LayerMask foodLayer;
-    [SerializeField] LayerMask waterLayer;
+    [SerializeField] LayerMask waterLayer; 
 
     private NavMeshAgent agent;
     private GameObject target;
     private Backpack backpack;
+    private Animator axeAnimator;
 
     private bool axeRotated = false;
+    private Coroutine choppingCoroutine;
 
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
         backpack = GetComponent<Backpack>();
+        axeAnimator = GetComponent<Animator>();
     }
 
     void Update()
@@ -106,40 +110,64 @@ public class Sim : MonoBehaviour
 
     public bool IsAtTargetAgent()
     {
-        return !agent.pathPending && agent.remainingDistance <= agent.stoppingDistance && !agent.hasPath;
+        return !agent.pathPending && agent.remainingDistance <= distanceToStop && !agent.hasPath;
     }
 
     public void ChopTree()
     {
-        // Reduce hunger and thirst
-        hunger -= Random.Range(1, 5);
-        thirst -= Random.Range(1, 5);
+        choppingCoroutine ??= StartCoroutine(ChopTreeCoroutine());
+    }
 
-        if (target != null)
+    private IEnumerator ChopTreeCoroutine()
+    {
+        // Check if the backpack is full
+        if (backpack.IsFull())
         {
-            if (!axeRotated)
-            {
-                // Simulate axe swinging
-                axe.Rotate(Vector3.right * 90);
-                axeRotated = true;
-            }
-            else
-            {
-                // Reset axe rotation after swinging
-                axe.Rotate(Vector3.left * 90);
-                axeRotated = false;
-
-                // Simulate chopping action with delay
-                backpack.AddLog();
-                target.GetComponent<Health>().TakeDamage();
-
-                // Check if the target is still active
-                if (!target.activeSelf)
-                {
-                    target = null;
-                }
-            }
+            choppingCoroutine = null;
+            yield break;
         }
+
+        if (target != null && IsAtTargetAgent())
+        {
+            // Reduce hunger and thirst
+            hunger -= Random.Range(1, 5);
+            thirst -= Random.Range(1, 5);
+
+            if (target != null && axeAnimator != null)
+            {
+                if (!axeRotated)
+                {
+                    // Simulate axe swinging
+                    axeAnimator.CrossFade("Swing", 0.1f);
+                    axeRotated = true;
+                }
+                else
+                {
+                    // Reset axe rotation after swinging
+                    axeAnimator.CrossFade("Idle", 0.1f);
+                    axeRotated = false;
+
+                    // Simulate chopping action with delay
+                    backpack.AddLog();
+                    target.GetComponent<Health>().TakeDamage();
+
+                    if (!target.activeSelf)
+                    {
+                        target = null;
+                    }
+                }
+
+                AnimatorStateInfo stateInfo = axeAnimator.GetCurrentAnimatorStateInfo(0);
+                float chopDelay = stateInfo.length;
+                chopDelay /= 60f;
+
+                // Wait for the duration of the animation
+                yield return new WaitForSeconds(chopDelay);
+            }
+            else yield return null;
+        }
+
+        choppingCoroutine = null;
     }
 
     public bool IsTreeActive()
