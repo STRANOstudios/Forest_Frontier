@@ -70,7 +70,7 @@ These steps should allow you to copy a Unity project from GitHub, set it up in U
 
 ### Release
 
-[Download](https://github.com/STRANOstudios/Forest_Frontier/releases/tag/v0.1.0-beta)
+[Download](https://github.com/STRANOstudios/Forest_Frontier/releases/tag/v0.1.1-beta)
 
 ## License
 
