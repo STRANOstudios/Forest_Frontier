@@ -1237,6 +1237,10 @@ MonoBehaviour:
   spawnAmount: 10
   objectsToSpawn:
   - {fileID: 610096032347319099, guid: 7419c6502f4d10a44ac28c6dbdca864e, type: 3}
+  - {fileID: 1994976138985578808, guid: d9fc3cad39253274cbf7d63902ea36a1, type: 3}
+  - {fileID: 8634677963564615000, guid: aa18d3c2064bf4a498b52306f4818869, type: 3}
+  - {fileID: 8861888123180130147, guid: af3f8be08bcebb9458877a40feae9b5f, type: 3}
+  - {fileID: 4709007938878126476, guid: bccbc3018b2ef3c4bb80155cccf16b00, type: 3}
   defaultSpawnPosition: {fileID: 395587740}
   navMeshSurface: {fileID: 1613875618}
   mainCamera: {fileID: 0}
