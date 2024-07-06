@@ -141,47 +141,43 @@ public class Sim : MonoBehaviour
     private IEnumerator ChopTreeCoroutine()
     {
         // Check if the backpack is full
-        if (backpack.IsFull())
+        if (!backpack.IsFull())
         {
-            choppingCoroutine = null;
-            yield break;
-        }
-
-        if (target != null && IsAtTargetAgent())
-        {
-            // Reduce hunger and thirst
-            hunger -= Random.Range(1, 5);
-            thirst -= Random.Range(1, 5);
-
-            OnHungerChanged?.Invoke(hunger);
-            OnThirstChanged?.Invoke(thirst);
-
-            if (target != null && axeAnimator != null)
+            if (target != null && IsAtTargetAgent())
             {
-                // Rotation player's head
-                gameObject.transform.rotation = Quaternion.LookRotation(target.transform.position - gameObject.transform.position);
+                // Reduce hunger and thirst
+                hunger -= Random.Range(1, 5);
+                thirst -= Random.Range(1, 5);
 
-                axeAnimator.CrossFade("Swing", 0.1f);
+                OnHungerChanged?.Invoke(hunger);
+                OnThirstChanged?.Invoke(thirst);
 
-                AnimatorStateInfo stateInfo = axeAnimator.GetCurrentAnimatorStateInfo(0);
-                float chopDelay = stateInfo.length;
-
-                // Wait for the duration of the animation
-                yield return new WaitForSeconds(chopDelay);
-
-                backpack.AddLog();
-                target.GetComponent<Health>().TakeDamage();
-
-                if (!target.activeSelf)
+                if (target != null && axeAnimator != null)
                 {
-                    target = null;
-                    choppingCoroutine = null;
-                    yield break;
-                }
-            }
-            else yield return null;
-        }
+                    // Rotation player's head
+                    gameObject.transform.rotation = Quaternion.LookRotation(target.transform.position - gameObject.transform.position);
 
+                    axeAnimator.CrossFade("Swing", 0.1f);
+
+                    AnimatorStateInfo stateInfo = axeAnimator.GetCurrentAnimatorStateInfo(0);
+                    float chopDelay = stateInfo.length;
+
+                    // Wait for the duration of the animation
+                    yield return new WaitForSeconds(chopDelay);
+
+                    backpack.AddLog();
+                    target.GetComponent<Health>().TakeDamage();
+
+                    if (!target.activeSelf)
+                    {
+                        target = null;
+                        choppingCoroutine = null;
+                        yield break;
+                    }
+                }
+                else yield return null;
+            }
+        }
         axeAnimator.CrossFade("Idle", 0.1f);
 
         choppingCoroutine = null;
@@ -268,6 +264,12 @@ public class Sim : MonoBehaviour
 
     public void ConsumeWater()
     {
+        if (target.GetComponent<IEdibleDrinkable>() == null)
+        {
+            Debug.Log("Target is not drinkable" + target.name);
+            return;
+        }
+
         thirst += target.GetComponent<IEdibleDrinkable>().Energy;
 
         thirst = Mathf.Clamp(thirst, 0, thirstBackup);

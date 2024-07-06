@@ -12,6 +12,9 @@ public class Spawner : MonoBehaviour
     [SerializeField, Min(0), Tooltip("the area for the raycast")] float spawnArea = 10;
     [SerializeField, Min(0), Tooltip("the amount of objects to spawn at start")] int spawnAmountInit = 10;
     [SerializeField, Min(0), Tooltip("the amount of objects to spawn")] int spawnAmount = 10;
+    [Space]
+    [SerializeField, Range(1, 24)] float spawnHoursMin = 5;
+    [SerializeField, Range(1, 24)] float spawnHoursMax = 23;
 
     [Header("References")]
     [SerializeField] List<GameObject> objectsToSpawn;
@@ -31,7 +34,7 @@ public class Spawner : MonoBehaviour
         if (!defaultSpawnPosition) Debug.LogWarning("DefaultSpawnPosition not assigned");
         if (objectsToSpawn.Count == 0) Debug.LogWarning("ObjectsToSpawn not assigned");
         if (!navMeshSurface) Debug.LogWarning("NavMeshSurface not assigned");
-        //if (!mainCamera) Debug.LogWarning("MainCamera not assigned");
+        //if (!mainCamera) debug.LogWarning("MainCamera not assigned");
     }
 
 #endif
@@ -43,7 +46,7 @@ public class Spawner : MonoBehaviour
 
     private void Update()
     {
-        if (TimeManager.time >= 6 && TimeManager.time <= 18)
+        if (TimeManager.time >= spawnHoursMin && TimeManager.time <= spawnHoursMax)
         {
             spawning = false;
             return;
