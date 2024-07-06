@@ -22,13 +22,7 @@ public class BehaviorTree2 : MonoBehaviour
                 new IsDayTime(),
                 new Selector(new List<Node>
                 {
-                    new Sequence(new List<Node>
-                    {
-                        new IsHungry(),
-                        new FindFood(),
-                        new MoveToTarget(),
-                        new ConsumeFood()
-                    }),
+                    // Thirsty
                     new Sequence(new List<Node>
                     {
                         new IsThirsty(),
@@ -36,6 +30,15 @@ public class BehaviorTree2 : MonoBehaviour
                         new MoveToTarget(),
                         new ConsumeWater()
                     }),
+                    // Hungry
+                    new Sequence(new List<Node>
+                    {
+                        new IsHungry(),
+                        new FindFood(),
+                        new MoveToTarget(),
+                        new ConsumeFood()
+                    }),
+                    // Work
                     new Selector(new List<Node>
                     {
                         new Sequence(new List<Node>
@@ -63,6 +66,7 @@ public class BehaviorTree2 : MonoBehaviour
                 new IsNightTime(),
                 new Selector(new List<Node>
                 {
+                    // Sleep
                     new Sequence(new List<Node>
                     {
                         new HasLogsInBackpack(),

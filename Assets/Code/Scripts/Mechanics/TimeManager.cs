@@ -19,9 +19,6 @@ public class TimeManager : MonoBehaviour
 
     private int day = 0;
 
-    bool isDay = false;
-    bool isNight = true;
-
     public delegate void TimeEvent(float value);
     public static TimeEvent OnTimeChange;
 
@@ -42,19 +39,13 @@ public class TimeManager : MonoBehaviour
             time = 0f;
         }
 
-        if (time >= dayTime && time < nightTime && !isDay)
+        if (time >= dayTime && time < nightTime)
         {
             Time.timeScale = dayTimeSpeed;
-
-            isDay = true;
-            isNight = false;
         }
-        else if(!isNight)
+        else
         {
             Time.timeScale = nightTimeSpeed;
-
-            isDay = false;
-            isNight = true;
         }
 
         OnTimeChange?.Invoke(time);

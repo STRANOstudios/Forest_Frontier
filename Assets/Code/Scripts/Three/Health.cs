@@ -1,18 +1,18 @@
 using DG.Tweening;
 using UnityEngine;
 
+[DisallowMultipleComponent]
 public class Health : MonoBehaviour
 {
     [Header("Settings")]
-    [SerializeField] LayerMask layersToDamage;
-    [SerializeField] int health = 3;
+    [SerializeField] private LayerMask layersToDamage;
+    [SerializeField] private int health = 3;
 
     [Header("References")]
-    [SerializeField] GameObject deathObject;
+    [SerializeField] private GameObject deathObject;
 
     private int healthBackup;
-
-    DOTweenAnimation dotweenAnimation;
+    private DOTweenAnimation dotweenAnimation;
 
     private void Awake()
     {
@@ -27,13 +27,24 @@ public class Health : MonoBehaviour
     private void OnEnable()
     {
         health = healthBackup;
+
+        if (dotweenAnimation == null)
+        {
+            if (!TryGetComponent<DOTweenAnimation>(out dotweenAnimation))
+            {
+                Debug.LogWarning("DOTweenAnimation component missing on " + gameObject.name);
+            }
+        }
     }
 
     public void TakeDamage()
     {
-        health--;
+        if (dotweenAnimation != null)
+        {
+            dotweenAnimation.DOPlay();
+        }
 
-        dotweenAnimation.DOPlay();
+        health--;
 
         if (health <= 0)
         {

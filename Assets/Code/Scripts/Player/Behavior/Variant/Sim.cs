@@ -161,37 +161,28 @@ public class Sim : MonoBehaviour
                 // Rotation player's head
                 gameObject.transform.rotation = Quaternion.LookRotation(target.transform.position - gameObject.transform.position);
 
-                if (!axeRotated)
-                {
-                    // Simulate axe swinging
-                    axeAnimator.CrossFade("Swing", 0.1f);
-                    axeRotated = true;
-                }
-                else
-                {
-                    // Reset axe rotation after swinging
-                    axeAnimator.CrossFade("Idle", 0.1f);
-                    axeRotated = false;
+                backpack.AddLog();
+                target.GetComponent<Health>().TakeDamage();
 
-                    // Simulate chopping action with delay
-                    backpack.AddLog();
-                    target.GetComponent<Health>().TakeDamage();
-
-                    if (!target.activeSelf)
-                    {
-                        target = null;
-                    }
+                if (!target.activeSelf)
+                {
+                    target = null;
+                    choppingCoroutine = null;
+                    yield break;
                 }
+
+                axeAnimator.CrossFade("Swing", 0.1f);
 
                 AnimatorStateInfo stateInfo = axeAnimator.GetCurrentAnimatorStateInfo(0);
                 float chopDelay = stateInfo.length;
-                chopDelay /= 60f;
 
                 // Wait for the duration of the animation
                 yield return new WaitForSeconds(chopDelay);
             }
             else yield return null;
         }
+
+        axeAnimator.CrossFade("Idle", 0.1f);
 
         choppingCoroutine = null;
     }
