@@ -1,8 +1,6 @@
 
 #region Conditions
 
-using System.Diagnostics;
-
 public class IsDayTime : Node
 {
     public override Status Execute()

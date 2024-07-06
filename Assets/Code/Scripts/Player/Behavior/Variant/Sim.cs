@@ -34,7 +34,6 @@ public class Sim : MonoBehaviour
     private Backpack backpack;
     private Animator axeAnimator;
 
-    private bool axeRotated = false;
     private Coroutine choppingCoroutine;
     private int hungerBackup;
     private int thirstBackup;
@@ -46,6 +45,9 @@ public class Sim : MonoBehaviour
     public delegate void SimDelegate(int value);
     public static SimDelegate OnHungerChanged;
     public static SimDelegate OnThirstChanged;
+
+    public delegate void BehaviorDelegate(string value);
+    public static BehaviorDelegate OnBehaviorChanged;
 
     private void Awake()
     {
@@ -97,6 +99,8 @@ public class Sim : MonoBehaviour
 
     public void FindNearestTree()
     {
+        OnBehaviorChanged?.Invoke("Find Nearest Tree");
+
         Collider[] trees = Physics.OverlapSphere(transform.position, 100f, treeLayer);
         float closestDistance = Mathf.Infinity;
 
@@ -113,6 +117,8 @@ public class Sim : MonoBehaviour
 
     public void MoveToTarget()
     {
+        OnBehaviorChanged?.Invoke("Move To Target");
+
         if (target != null)
         {
             agent.SetDestination(target.transform.position);
@@ -135,6 +141,8 @@ public class Sim : MonoBehaviour
 
     public void ChopTree()
     {
+        OnBehaviorChanged?.Invoke("Chop Tree");
+
         choppingCoroutine ??= StartCoroutine(ChopTreeCoroutine());
     }
 
@@ -190,6 +198,8 @@ public class Sim : MonoBehaviour
 
     public void GoToStorage()
     {
+        OnBehaviorChanged?.Invoke("Go To Storage");
+
         agent.SetDestination(storageLocation.position);
     }
 
@@ -197,6 +207,8 @@ public class Sim : MonoBehaviour
     {
         if (IsAtTargetAgent() && HasLogsInBackpack())
         {
+            OnBehaviorChanged?.Invoke("Deposit Logs");
+
             backpack.RemoveLogs();
         }
     }
@@ -213,11 +225,15 @@ public class Sim : MonoBehaviour
 
     public void GoToSleep()
     {
+        OnBehaviorChanged?.Invoke("Go To Sleep");
+
         agent.SetDestination(sleepLocation.position);
     }
 
     public void FindNearestFood()
     {
+        OnBehaviorChanged?.Invoke("Find Nearest Food");
+
         Collider[] foods = Physics.OverlapSphere(transform.position, 100f, foodLayer);
         float closestDistance = Mathf.Infinity;
 
@@ -234,6 +250,8 @@ public class Sim : MonoBehaviour
 
     public void FindNearestWater()
     {
+        OnBehaviorChanged?.Invoke("Find Nearest Water");
+
         Collider[] waters = Physics.OverlapSphere(transform.position, 100f, waterLayer);
         float closestDistance = Mathf.Infinity;
 
@@ -250,6 +268,8 @@ public class Sim : MonoBehaviour
 
     public void ConsumeFood()
     {
+        OnBehaviorChanged?.Invoke("Consume Food");
+
         hunger += target.GetComponentInParent<IEdibleDrinkable>().Energy;
 
         hunger = Mathf.Clamp(hunger, 0, hungerBackup);
@@ -264,11 +284,7 @@ public class Sim : MonoBehaviour
 
     public void ConsumeWater()
     {
-        if (target.GetComponent<IEdibleDrinkable>() == null)
-        {
-            Debug.Log("Target is not drinkable" + target.name);
-            return;
-        }
+        OnBehaviorChanged?.Invoke("Consume Water");
 
         thirst += target.GetComponent<IEdibleDrinkable>().Energy;
 

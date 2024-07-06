@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -7,7 +6,7 @@ using UnityEngine.SceneManagement;
 public class SceneInitializer : MonoBehaviour
 {
     [Header("Scene Manager")]
-    [SerializeField] private List<SceneAsset> scenes = new();
+    [SerializeField] private List<string> sceneNames = new();
 
     private void Awake()
     {
@@ -16,11 +15,11 @@ public class SceneInitializer : MonoBehaviour
 
     private void LoadScene()
     {
-        foreach (var scene in scenes)
+        foreach (var sceneName in sceneNames)
         {
-            if (!IsSceneLoaded(scene.name))
+            if (!IsSceneLoaded(sceneName))
             {
-                SceneManager.LoadSceneAsync(scene.name, LoadSceneMode.Additive);
+                SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
             }
         }
     }

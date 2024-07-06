@@ -15,12 +15,16 @@ public class TimeManager : MonoBehaviour
     [Space]
     [SerializeField, Range(1, 24), Tooltip("Initial time in game")] private float initialTime = 7f;
 
+    [Header("Debug")]
+    [SerializeField, Range(0, 90), Tooltip("[Use only for testing]\nHigher levels correspond to increased bugs.")] private int timeSpeed = 0;
+
     public static float time = 0;
 
     private int day = 0;
 
     public delegate void TimeEvent(float value);
     public static TimeEvent OnTimeChange;
+    public static TimeEvent OnDayChange;
 
     private void Awake()
     {
@@ -36,16 +40,19 @@ public class TimeManager : MonoBehaviour
         if (time >= 24f)
         {
             day++;
+
+            OnDayChange?.Invoke(day);
+
             time = 0f;
         }
 
         if (time >= dayTime && time < nightTime)
         {
-            Time.timeScale = dayTimeSpeed;
+            Time.timeScale = dayTimeSpeed + timeSpeed;
         }
         else
         {
-            Time.timeScale = nightTimeSpeed;
+            Time.timeScale = nightTimeSpeed + timeSpeed;
         }
 
         OnTimeChange?.Invoke(time);
