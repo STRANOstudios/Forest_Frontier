@@ -8,16 +8,8 @@ public class SoundManager : MonoBehaviour
     [SerializeField] private AudioClip drinkSound;
     [SerializeField] private AudioClip eatSound;
 
-    private AudioSource audioSource;
-
-    private void Awake()
-    {
-        audioSource = GetComponent<AudioSource>();
-        if (audioSource == null)
-        {
-            audioSource = gameObject.AddComponent<AudioSource>();
-        }
-    }
+    [Header("Reference")] 
+    [SerializeField] private AudioSource audioSource;
 
     public void PlayChopSound()
     {
