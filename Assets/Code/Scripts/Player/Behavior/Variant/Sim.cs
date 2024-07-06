@@ -161,6 +161,14 @@ public class Sim : MonoBehaviour
                 // Rotation player's head
                 gameObject.transform.rotation = Quaternion.LookRotation(target.transform.position - gameObject.transform.position);
 
+                axeAnimator.CrossFade("Swing", 0.1f);
+
+                AnimatorStateInfo stateInfo = axeAnimator.GetCurrentAnimatorStateInfo(0);
+                float chopDelay = stateInfo.length;
+
+                // Wait for the duration of the animation
+                yield return new WaitForSeconds(chopDelay);
+
                 backpack.AddLog();
                 target.GetComponent<Health>().TakeDamage();
 
@@ -170,14 +178,6 @@ public class Sim : MonoBehaviour
                     choppingCoroutine = null;
                     yield break;
                 }
-
-                axeAnimator.CrossFade("Swing", 0.1f);
-
-                AnimatorStateInfo stateInfo = axeAnimator.GetCurrentAnimatorStateInfo(0);
-                float chopDelay = stateInfo.length;
-
-                // Wait for the duration of the animation
-                yield return new WaitForSeconds(chopDelay);
             }
             else yield return null;
         }
