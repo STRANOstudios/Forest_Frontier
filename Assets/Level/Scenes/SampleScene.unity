@@ -875,7 +875,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.35826376, y: -0.000000022718249, z: 0.00000000871781, w: 0.93362045}
+  m_LocalRotation: {x: 0.35826376, y: 0.000000022718249, z: -0.000000008717809, w: 0.93362045}
   m_LocalPosition: {x: 0, y: 10, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1439,6 +1439,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5bcea85e3588d7847b62d4b219323ce8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sunset: 6
+  sunrise: 19
+  time: 0
 --- !u!1 &456646837
 GameObject:
   m_ObjectHideFlags: 0
@@ -1620,7 +1623,7 @@ MonoBehaviour:
   hungerLimit: 20
   thirstLimit: 20
   timeToWork: 7
-  timeToSleep: 18
+  timeToSleep: 22
   distanceToStop: 2
   axe: {fileID: 575446485}
   storageLocation: {fileID: 902142670}
@@ -2275,9 +2278,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dayDuration: 240
   dayTimeSpeed: 1
-  nightTimeSpeed: 5
+  nightTimeSpeed: 8
   dayTime: 6
-  nightTime: 18
+  nightTime: 21
   initialTime: 7
 --- !u!1 &829814798
 GameObject:
@@ -4178,7 +4181,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1625911571}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.35826376, y: -0.000000022718249, z: 0.00000000871781, w: 0.93362045}
+  m_LocalRotation: {x: 0.35826376, y: 0.000000022718249, z: -0.000000008717809, w: 0.93362045}
   m_LocalPosition: {x: 0, y: 10, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
