@@ -41,7 +41,7 @@ public class Health : MonoBehaviour
     {
         if (dotweenAnimation != null)
         {
-            dotweenAnimation.DOPlay();
+            dotweenAnimation.DORestart();
         }
 
         health--;
