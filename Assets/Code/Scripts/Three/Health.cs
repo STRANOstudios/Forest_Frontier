@@ -7,6 +7,8 @@ public class Health : MonoBehaviour
     [Header("Settings")]
     [SerializeField] private LayerMask layersToDamage;
     [SerializeField] private int health = 3;
+    [Space]
+    [SerializeField, Range(0f, 2f)] float yOffset = 0.4f;
 
     [Header("References")]
     [SerializeField] private GameObject deathObject;
@@ -50,7 +52,11 @@ public class Health : MonoBehaviour
         {
             if (deathObject != null)
             {
-                ObjectPoolerManager.SpawnObject(deathObject, transform.position, Quaternion.identity);
+                Vector3 vector = transform.position;
+
+                vector.y += yOffset;
+
+                ObjectPoolerManager.SpawnObject(deathObject, vector, Quaternion.identity);
             }
             ObjectPoolerManager.ReturnObjectToPool(gameObject);
             gameObject.SetActive(false);
