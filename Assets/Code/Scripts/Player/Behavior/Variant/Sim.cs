@@ -33,6 +33,7 @@ public class Sim : MonoBehaviour
     private GameObject target;
     private Backpack backpack;
     private Animator axeAnimator;
+    private SoundManager soundManager;
 
     private Coroutine choppingCoroutine;
     private int hungerBackup;
@@ -60,6 +61,7 @@ public class Sim : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         backpack = GetComponent<Backpack>();
         axeAnimator = GetComponent<Animator>();
+        soundManager = FindObjectOfType<SoundManager>();
     }
 
     void Update()
@@ -272,6 +274,8 @@ public class Sim : MonoBehaviour
 
         hunger += target.GetComponentInParent<IEdibleDrinkable>().Energy;
 
+        soundManager.PlayEatSound();
+
         hunger = Mathf.Clamp(hunger, 0, hungerBackup);
 
         OnHungerChanged?.Invoke(hunger);
@@ -288,10 +292,17 @@ public class Sim : MonoBehaviour
 
         thirst += target.GetComponent<IEdibleDrinkable>().Energy;
 
+        soundManager.PlayDrinkSound();
+
         thirst = Mathf.Clamp(thirst, 0, thirstBackup);
 
         OnThirstChanged?.Invoke(thirst);
 
         if (target != null) target = null;
+    }
+
+    public void ChopSound()
+    {
+        soundManager.PlayChopSound();
     }
 }

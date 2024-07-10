@@ -22,8 +22,8 @@ public class DayCounter : MonoBehaviour
         TimeManager.OnDayChange -= OnDayChange;
     }
 
-    private void OnDayChange(float value)
+    private void OnDayChange(int value)
     {
-        _text.text = $"{(int)value}";
+        _text.text = $"{value}";
     }
 }

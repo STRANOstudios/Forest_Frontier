@@ -13,6 +13,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: '- Three Variant'
       objectReference: {fileID: 0}
+    - target: {fileID: 1539890715202978088, guid: 7419c6502f4d10a44ac28c6dbdca864e,
+        type: 3}
+      propertyPath: health
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 1588699945071260315, guid: 7419c6502f4d10a44ac28c6dbdca864e,
         type: 3}
       propertyPath: m_LocalPosition.x

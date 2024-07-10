@@ -20,41 +20,41 @@ public class TimeManager : MonoBehaviour
 
     public static float time = 0;
 
-    private int day = 0;
+    private float currentTime;
+    private int dayCount;
 
-    public delegate void TimeEvent(float value);
-    public static TimeEvent OnTimeChange;
-    public static TimeEvent OnDayChange;
+    public static event Action<float> OnTimeChange;
+    public static event Action<int> OnDayChange;
 
     private void Awake()
     {
-        time = initialTime;
+        time = currentTime = initialTime;
     }
 
     private void Update()
     {
         if (Time.timeScale == 0) return;
 
-        time += (Time.deltaTime / dayDuration) * 24f;
+        UpdateTime();
+    }
 
-        if (time >= 24f)
+    private void UpdateTime()
+    {
+        currentTime += (Time.deltaTime / dayDuration) * 24f;
+
+        if (currentTime >= 24f)
         {
-            day++;
-
-            OnDayChange?.Invoke(day);
-
-            time = 0f;
+            dayCount++;
+            currentTime = 0f;
+            OnDayChange?.Invoke(dayCount);
         }
 
-        if (time >= dayTime && time < nightTime)
-        {
-            Time.timeScale = dayTimeSpeed + timeSpeed;
-        }
-        else
-        {
-            Time.timeScale = nightTimeSpeed + timeSpeed;
-        }
+        Time.timeScale = (currentTime >= dayTime && currentTime < nightTime)
+                         ? dayTimeSpeed + timeSpeed
+                         : nightTimeSpeed + timeSpeed;
 
-        OnTimeChange?.Invoke(time);
+        time = currentTime;
+
+        OnTimeChange?.Invoke(currentTime);
     }
 }
