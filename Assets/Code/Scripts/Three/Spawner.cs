@@ -10,11 +10,14 @@ public class Spawner : MonoBehaviour
     [SerializeField, Min(0)] float spawnRadius = 1.0f; // Radius for raycast to check for obstacles
     [SerializeField, Min(0), Tooltip("the tolerance for the raycast")] float tolerance = 0.5f;
     [SerializeField, Min(0), Tooltip("the area for the raycast")] float spawnArea = 10;
+    [Space]
     [SerializeField, Min(0), Tooltip("the amount of objects to spawn at start")] int spawnAmountInit = 10;
     [SerializeField, Min(0), Tooltip("the amount of objects to spawn")] int spawnAmount = 10;
     [Space]
     [SerializeField, Range(1, 24)] float spawnHoursMin = 5;
     [SerializeField, Range(1, 24)] float spawnHoursMax = 23;
+    [Space]
+    [SerializeField, Range(0f, 2f)] float yOffset = 0.5f;
 
     [Header("References")]
     [SerializeField] List<GameObject> objectsToSpawn;
@@ -69,6 +72,8 @@ public class Spawner : MonoBehaviour
 
             if (vector3 == Vector3.zero) continue;
 
+            vector3.y -= yOffset;
+
             ObjectPoolerManager.SpawnObject(objectsToSpawn[Random.Range(0, objectsToSpawn.Count)], vector3, Quaternion.Euler(0, Random.Range(0, 360), 0));
         }
     }
@@ -80,6 +85,8 @@ public class Spawner : MonoBehaviour
             Vector3 vector3 = GetValidSpawnPoint();
 
             if (vector3 == Vector3.zero) continue;
+
+            vector3.y -= yOffset;
 
             ObjectPoolerManager.SpawnObject(objectsToSpawn[Random.Range(0, objectsToSpawn.Count)], vector3, Quaternion.Euler(0, Random.Range(0, 360), 0));
         }
@@ -133,13 +140,16 @@ public class Spawner : MonoBehaviour
 
     bool IsObstructed(Vector3 point)
     {
-        Collider[] hitColliders = Physics.OverlapSphere(point, spawnRadius, navMeshSurface.gameObject.layer);
+        int obstacleLayer = LayerMask.NameToLayer("Obstacles");
+        int obstacleLayerMask = 1 << obstacleLayer;
+
+        Collider[] hitColliders = Physics.OverlapSphere(point, spawnRadius, obstacleLayerMask);
 
         Debug.DrawRay(point, Vector3.up * 2, Color.green, 5.0f); // Draw ray at the spawn position
 
         foreach (var hitCollider in hitColliders)
         {
-            if (hitCollider.gameObject.layer == objectsToSpawn[0].layer)
+            if (hitCollider.gameObject.layer == obstacleLayer)
             {
                 return true;
             }

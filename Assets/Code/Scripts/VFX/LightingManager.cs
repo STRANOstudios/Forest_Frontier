@@ -9,7 +9,7 @@ public class LightingManager : MonoBehaviour
 
     [Header("Debug")]
     [SerializeField] bool debug;
-    [SerializeField, Range(0, 24)] private float TimeOfDay;
+    [SerializeField, Range(0, 24), Tooltip("[For Debug]\nTime in hours")] private float TimeOfDay;
 
 
     private void Update()
